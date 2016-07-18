@@ -21,7 +21,7 @@ export class MyApp {
     };
     firebase.initializeApp(config);
     firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
+      if (user) {       
         // If there's a user take him to the home page.
         this.rootPage = HomePage;
       } else {

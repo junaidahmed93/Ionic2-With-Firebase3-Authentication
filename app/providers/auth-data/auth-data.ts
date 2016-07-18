@@ -8,11 +8,13 @@ import * as firebase from 'firebase';
 export class AuthData {
   public fireAuth: any;
   public userProfile: any;
+  public userData: any;
   local: Storage;
 
   constructor(public nav: NavController) {
     this.fireAuth = firebase.auth();
     this.userProfile = firebase.database().ref('/userProfile');
+    this.userData = firebase.database().ref('/userData');
   }
 
   loginUser(email: string, password: string): any {
@@ -78,5 +80,28 @@ export class AuthData {
   }
   logoutUser(): any {
     return this.fireAuth.signOut();
+  }
+
+  sendDataToFirebase(name: string, age: number, comments: string): any {
+    console.log(name, age, comments);
+    this.userData.child("Node").push({
+      name: name,
+      age: age,
+      comments: comments
+    }).then(() => {
+      let prompt = Alert.create({
+        message: "Save Data",
+        buttons: [{ text: "Ok" }]
+      });
+      this.nav.present(prompt);
+    });
+  }
+
+  receiveDataFromFirebase(callback): any {
+    this.userData.child("Node").on("value", function (snapshot) {
+      console.log("Came from auth provider", snapshot.val())
+      snapshot.val();
+      callback(snapshot.val());
+    });
   }
 }

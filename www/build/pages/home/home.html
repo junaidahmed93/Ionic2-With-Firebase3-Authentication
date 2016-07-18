@@ -8,8 +8,28 @@
 </ion-header>
 
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+  <form [ngFormModel]="userInfo" (submit)="allUserData($event)">
+    <ion-item>
+      <ion-label stacked>Name</ion-label>
+      <ion-input ngControl="name" type="text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked>Age</ion-label>
+      <ion-input ngControl="age" type="text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked>Comments</ion-label>
+      <ion-input ngControl="comments" type="text"></ion-input>
+    </ion-item>
+
+    <button block type="submit">
+      Send To Firebase
+    </button>
+  </form>
+
+  <button block clear (click)="showFirebaseData()">
+      Show Firebase Data
+    </button>
 </ion-content>
