@@ -98,10 +98,21 @@ export class AuthData {
   }
 
   receiveDataFromFirebase(callback): any {
-    this.userData.child("Node").on("value", function (snapshot) {
-      console.log("Came from auth provider", snapshot.val())
-      snapshot.val();
-      callback(snapshot.val());
+    this.userData.child("Node").on("child_added", function (snapshot) {
+      console.log("Child Added Running", snapshot.key);
+      callback(snapshot.key , snapshot.val());
     });
+    this.userData.child("Node").on("child_removed", function (snapshot) {      
+       console.log("Child remove running", snapshot.key , snapshot.val());      
+      // callback(snapshot.key,snapshot.val());
+    });
+  }
+
+  deleteDataFromFirebase(key , onComplete): any {
+    
+    console.log("hitting");
+    console.log(key);
+    this.userData.child("Node").child(key).set(null,onComplete);
+    onComplete(key);
   }
 }
