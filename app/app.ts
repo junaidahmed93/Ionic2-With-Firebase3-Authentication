@@ -14,21 +14,23 @@ export class MyApp {
 
   constructor(platform: Platform) {
     var config = {
-      apiKey: "AIzaSyDlWcfovPyG0u0zULeT01xZkiP330-C8TA",
-      authDomain: "ionic2-918c4.firebaseapp.com",
-      databaseURL: "https://ionic2-918c4.firebaseio.com",
-      storageBucket: "ionic2-918c4.appspot.com",
+      apiKey: "AIzaSyDEEGuZ9qhEDKGTWz0uQk97lc_v3r8c6R8",
+      authDomain: "nobly-v2.firebaseapp.com",
+      databaseURL: "https://nobly-v2.firebaseio.com",
+      storageBucket: "nobly-v2.appspot.com",
     };
     firebase.initializeApp(config);
     firebase.auth().onAuthStateChanged((user) => {
-      if (user) {       
+      if (user) {
         // If there's a user take him to the home page.
-        this.rootPage = HomePage;
+        console.log(user);      
+       this.rootPage = HomePage;
       } else {
         // If there's no user logged in send him to the LoginPage
         this.rootPage = LoginPage;
       }
     });
+    
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.

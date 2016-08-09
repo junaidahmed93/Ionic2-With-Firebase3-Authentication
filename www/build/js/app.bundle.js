@@ -20,15 +20,16 @@ var MyApp = (function () {
         var _this = this;
         this.rootPage = home_1.HomePage;
         var config = {
-            apiKey: "AIzaSyDlWcfovPyG0u0zULeT01xZkiP330-C8TA",
-            authDomain: "ionic2-918c4.firebaseapp.com",
-            databaseURL: "https://ionic2-918c4.firebaseio.com",
-            storageBucket: "ionic2-918c4.appspot.com",
+            apiKey: "AIzaSyDEEGuZ9qhEDKGTWz0uQk97lc_v3r8c6R8",
+            authDomain: "nobly-v2.firebaseapp.com",
+            databaseURL: "https://nobly-v2.firebaseio.com",
+            storageBucket: "nobly-v2.appspot.com",
         };
         firebase.initializeApp(config);
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
                 // If there's a user take him to the home page.
+                console.log(user);
                 _this.rootPage = home_1.HomePage;
             }
             else {
@@ -156,6 +157,12 @@ var LoginPage = (function () {
     };
     LoginPage.prototype.goToResetPassword = function () {
         this.nav.push(reset_password_1.ResetPasswordPage);
+    };
+    LoginPage.prototype.goToFacebookLogin = function () {
+        this.authData.facebookLogin();
+    };
+    LoginPage.prototype.goToGoogleLogin = function () {
+        this.authData.googleLogin();
     };
     LoginPage = __decorate([
         core_1.Component({
@@ -356,17 +363,64 @@ var AuthData = (function () {
         this.fireAuth = firebase.auth();
         this.userProfile = firebase.database().ref('/userProfile');
         this.userData = firebase.database().ref('/userData');
+        this.facebookAuth = new firebase.auth.FacebookAuthProvider();
+        this.googleAuth = new firebase.auth.GoogleAuthProvider();
     }
     AuthData.prototype.loginUser = function (email, password) {
         var _this = this;
         return this.fireAuth.signInWithEmailAndPassword(email, password).then(function (authData) {
-            _this.nav.setRoot(home_1.HomePage);
+            _this.nav.push(home_1.HomePage);
         }, function (error) {
             var prompt = ionic_angular_1.Alert.create({
                 message: error.message,
                 buttons: [{ text: "Ok" }]
             });
             _this.nav.present(prompt);
+        });
+    };
+    AuthData.prototype.facebookLogin = function () {
+        firebase.auth().signInWithPopup(this.facebookAuth).then(function (result) {
+            this.nav.push(home_1.HomePage);
+            console.log(result);
+            console.log("Facebook Login");
+            // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+            var token = result;
+            // The signed-in user info.
+            var user = result.user;
+            // ...
+        }).catch(function (error) {
+            console.log("Facebook Login Error");
+            // Handle Errors here.
+            var errorCode = error;
+            var errorMessage = error;
+            // The email of the user's account used.
+            var email = error;
+            // The firebase.auth.AuthCredential type that was used.
+            var credential = error;
+            // ...
+            console.log(error);
+        });
+    };
+    AuthData.prototype.googleLogin = function () {
+        firebase.auth().signInWithPopup(this.googleAuth).then(function (result) {
+            console.log("google Login");
+            // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+            var token = result;
+            // The signed-in user info.
+            var user = result.user;
+            console.log("user", user);
+            // ...
+        }).catch(function (error) {
+            console.log("Google Login Error");
+            // Handle Errors here.
+            console.log("error", error);
+            var errorCode = error;
+            var errorMessage = error;
+            // The email of the user's account used.
+            var email = error;
+            // The firebase.auth.AuthCredential type that was used.
+            var credential = error;
+            // ...
         });
     };
     AuthData.prototype.signupUser = function (email, password) {

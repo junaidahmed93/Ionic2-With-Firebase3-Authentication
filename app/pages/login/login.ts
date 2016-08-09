@@ -44,4 +44,11 @@ export class LoginPage {
   goToResetPassword() {
     this.nav.push(ResetPasswordPage);
   }
+
+  goToFacebookLogin(){
+    this.authData.facebookLogin();
+  }
+  goToGoogleLogin(){
+    this.authData.googleLogin();
+  }
 }
